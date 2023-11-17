@@ -1,3 +1,4 @@
+import { Client } from 'discord.js';
 import puppeteer from 'puppeteer';
 
 const EVENTIM_URL = 'https://www.eventim.com.br/event/paul-mccartney-estadio-couto-pereira-17441256/?affiliate=PMY';
@@ -8,7 +9,6 @@ R$ 495,00
 Indisponível no momento`;
 
 const main = async () => {
-  // Launch the browser and open a new blank page
   const browser = await puppeteer.launch({
     headless: false,
   });
@@ -17,7 +17,6 @@ const main = async () => {
 
   await page.goto(EVENTIM_URL);
 
-  // Wait for the ticket list to be rendered
   await page.waitForSelector(TICKET_SELECTOR);
 
   const tickets = await page.$$(TICKET_SELECTOR);
@@ -47,7 +46,16 @@ const ticketHandler = async (selectedTicket) => {
 };
 
 const notifyUser = () => {
+  const botId = '1111847016344059985';
 
+  const client = new Client({
+    intents: ['GuildMessages', 'MessageContent'],
+  });
+
+  client.on('ready', () => {
+    console.log('Bot is ready');
+    console.log(client.user.tag)
+  });
 }
 
 main();
